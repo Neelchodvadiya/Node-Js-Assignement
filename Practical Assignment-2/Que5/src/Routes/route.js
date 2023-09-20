@@ -5,7 +5,7 @@ const uploadfile  = require('../Middleware/uploadfile');
 router.post('/register',uploadfile.upload, StudentController.RegisterStudent );
 router.post('/login', StudentController.Studentlogin);
 router.get('/logout', StudentController.StudentLogout);
-router.get('/viewStudent', StudentController.getalldata);
+router.get('/viewStudent',upload, StudentController.getalldata);
 router.get('/viewStudent/:id', StudentController.ViewOneStudent);
 router.post('/updateStudent/:id',uploadfile.upload, StudentController.updatedata);
 router.get('/deleteStudent/:id', StudentController.deleteStudent);

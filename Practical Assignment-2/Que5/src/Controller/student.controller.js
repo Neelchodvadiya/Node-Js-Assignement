@@ -67,9 +67,9 @@ exports.RegisterStudent  = async (req, res) => {
       });
   
     const data =   await newStudent.save();
-  
-      res.status(200).json({ message: 'Student registered successfully',
-    data:data });
+    res.status(201).redirect("/viewStudent");
+    //   res.status(200).json({ message: 'Student registered successfully',
+    // data:data });
     } catch (error) {
       res.status(500).json({ message: 'An error occurred while registering the student' });
     }
@@ -114,6 +114,13 @@ exports.ViewOneStudent = async (req, res) => {
 exports.updatedata = async (req, res) => {
   try {
       const _id = req.params.id;
+      req.body.Images = req.files.map(file => {
+        
+        return {
+          ImageUrl: file.filename
+        };
+      });
+      
       const data = await Student.findByIdAndUpdate(_id, req.body, {
           new: true
       });

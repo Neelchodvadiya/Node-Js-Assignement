@@ -2,7 +2,7 @@ const router = require('express').Router();
 const StudentController = require('../Controller/student.controller');
 const uploadfile  = require('../Middleware/uploadfile');
 
-router.post('/register',uploadfile.verifyToken,uploadfile.upload, StudentController.RegisterStudent );
+router.post('/register',uploadfile.upload, StudentController.RegisterStudent );
 router.post('/login', StudentController.Studentlogin);
 router.get('/logout', StudentController.StudentLogout);
 router.get('/viewStudent', StudentController.getalldata);
