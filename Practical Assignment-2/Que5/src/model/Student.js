@@ -21,7 +21,7 @@ const studentSchema = new mongoose.Schema({
         type: String,
         
     },
-    adderss: {
+    address: {
         type: String
     },
     phone: {

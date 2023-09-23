@@ -35,7 +35,7 @@
     <tr>
       <th scope="row">{{@index}}</th>
       <td>{{name}}</td>
-      <td>{{email}}</td>
+      <td>{{ email}}</td>
       <td>{{phone}}</td>
       <td>
           {{#each Images}}
@@ -43,7 +43,7 @@
           {{/each}}
       </td>
       <td>
-        <a href="/editUserProfile/{{_id}}"><button type="button" class="btn btn-outline-primary btn-rounded btn-sm">Edit</button></a>
+        <a href="/viewStudent/{{_id}}"><button type="button" class="btn btn-outline-primary btn-rounded btn-sm">Edit</button></a>
 
         <a href="/deleteStudent/{{_id}}"><button type="button" class="btn btn-outline-danger btn-rounded btn-sm">Delete</button></a>
       </td>

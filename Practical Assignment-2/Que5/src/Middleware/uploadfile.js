@@ -1,4 +1,6 @@
 var multer = require('multer');
+const jwt = require("jsonwebtoken");
+const userData = require("../model/Student");
 // set storage engine
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -21,3 +23,23 @@ exports.upload = multer({
         }
     }
 }).array('Images', 5); 
+
+
+//verify Token
+exports.verifyToken = async (req, res, next) => {
+    try {
+        
+        const token = req.cookies.jwt;
+        const verifyToken = jwt.verify(token, process.env.TOKEN_KEY);
+
+        
+        const adminUser = await userData.findOne({ _id: verifyToken._id });
+
+        req.token = token;
+        req.adminUser = adminUser;
+        next();
+    } catch (error) {
+        console.log(error);
+        res.status(400).render("login")
+    }
+};

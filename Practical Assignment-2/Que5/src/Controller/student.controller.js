@@ -12,10 +12,12 @@ exports.Studentlogin = async (req, res) => {
           if (!data.tokens[0]) {
               const token = await data.generateauthToken();
               res.cookie("jwt", token, {
-                  expires: new Date(Date.now() + 100000)
+                  expires: new Date(Date.now() + (24 * 60 * 60 * 1000))
               })
-
-              res.status(201).redirect("/viewStudent");
+             return   res.status(200).json({
+              msg:"Successfully Login",
+              status:200
+             })
           } else {
               res.status(400).json({
                   message: "already token",
@@ -38,7 +40,7 @@ exports.Studentlogin = async (req, res) => {
 
   }
 }
-
+          
 
 exports.RegisterStudent  = async (req, res) => {
     try {
@@ -62,14 +64,16 @@ exports.RegisterStudent  = async (req, res) => {
         password,
         confpassword,
         address,
-        phone,
+        phone,      
         Images: images
       });
   
     const data =   await newStudent.save();
-    res.status(201).redirect("/viewStudent");
-    //   res.status(200).json({ message: 'Student registered successfully',
-    // data:data });
+      console.log("🚀 ~ file: student.controller.js:70 ~ exports.RegisterStudent= ~ data:", data)
+      
+      res.status(201).json({ message: 'Student registered successfully',
+      status :201,
+    data:data });
     } catch (error) {
       res.status(500).json({ message: 'An error occurred while registering the student' });
     }
@@ -85,10 +89,12 @@ exports.RegisterStudent  = async (req, res) => {
         })
         res.clearCookie("jwt");
         await req.user.save();
-        res.redirect("/");
+        res.status(200).json({msg:"Deleted",
+        status:200})
 
     } catch (error) {
-      res.redirect("/");
+      res.status(200).json({msg:"Deleted",
+      status:200})
 
     }
 }
@@ -96,7 +102,8 @@ exports.RegisterStudent  = async (req, res) => {
 exports.ViewOneStudent = async (req, res) => {
   try {
       const _id = req.params.id;
-      const data = await chapter.findById(_id);
+      const data = await Student.findById(_id);
+      // res.render("updateStudent", { records: data})
      
       res.status(200).json({
           message: "record Found successfully",
@@ -114,21 +121,11 @@ exports.ViewOneStudent = async (req, res) => {
 exports.updatedata = async (req, res) => {
   try {
       const _id = req.params.id;
-      req.body.Images = req.files.map(file => {
-        
-        return {
-          ImageUrl: file.filename
-        };
-      });
-      
       const data = await Student.findByIdAndUpdate(_id, req.body, {
           new: true
       });
      
-      res.status(200).json({
-          message: "record updated successfully",
-          data:data
-      })
+      res.status(201).redirect("/viewStudent");
 
   } catch (error) {
       console.log(error);
@@ -140,9 +137,11 @@ exports.updatedata = async (req, res) => {
 
 exports.getalldata = async (req, res) => {
   try {
-      const showdata = await Student.find({ email: { $not: { $eq: "admin" } } })
-     
-      res.render("AllStudent", { records: showdata});
+      const showdata = await Student.find()
+     res.status(200).json({
+      data:showdata
+     })
+      // res.render("AllStudent", { records: showdata});
   } catch (error) {
       res.status(400).json({
           message: "can not display"
@@ -157,7 +156,8 @@ exports.deleteStudent = async (req, res) => {
       const data = await Student.findByIdAndDelete(_id, {
           new: true
       });
-     res.redirect("/viewStudent");
+     res.status(200).json({msg:"Deleted",
+    status:200})
 
 
   } catch (error) {
