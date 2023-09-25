@@ -22,6 +22,9 @@
 
 
 <script>
+    
+
+      
 
 $('#logout-link').click(function(event) {
         event.preventDefault(); // Prevent the default behavior of the anchor tag
@@ -95,9 +98,9 @@ $('#logout-link').click(function(event) {
       });
       
       tableHTML += '</td>';
-      tableHTML += '<td>';
-      tableHTML += '<a href="/viewstudents.html?id=' + record._id + '"><button type="button" class="btn btn-outline-primary btn-rounded btn-sm">Edit</button></a>';
-      tableHTML += '<button href="/deleteStudent/' + record._id + '"><button type="button" class="btn btn-outline-danger btn-rounded btn-sm">Delete</button></button>';
+      tableHTML += '<td>';  
+      tableHTML += '<a href="/viewstudents.html?id=' + record._id + '"class="btn btn-outline-primary btn-rounded btn-sm">Edit</a>';
+      tableHTML += "'<a data-id='" + record._id +"' class='dbtn btn btn-outline-danger rounded btn-sm'>Delete</a>"
       tableHTML += '</td>';
       tableHTML += '</tr>'; 
     });
@@ -113,6 +116,24 @@ $('#logout-link').click(function(event) {
     console.log('Error fetching records');
   }
 });
+
+
+$(document).on("click", ".dbtn", function () {
+        console.log("Clicked");
+        const id = $(this).data("id");
+        console.log(id);
+
+        $.ajax({
+          type: "GET",
+
+          url: `http://localhost:8000/deleteStudent/${id}`,
+          success: () => {
+            console.log("data deleted successfully");
+            location.reload();
+          },
+        });
+      });
+
 
 </script>
 </body>
